@@ -32,9 +32,11 @@ class ChatWithDocumentView(views.APIView):
         except Document.DoesNotExist:
             return Response({"error": "Document not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        question = request.data.get('question')
+        question = request.data.get('question', '').strip()
         if not question:
             return Response({"error": "Question is required"}, status=status.HTTP_400_BAD_REQUEST)
+        if len(question) > 500:
+            return Response({"error": "Question must be under 500 characters"}, status=status.HTTP_400_BAD_REQUEST)
 
         answer = answer_question(document, question)
 
