@@ -50,9 +50,13 @@ class SubmitQuizView(views.APIView):
         except Quiz.DoesNotExist:
             return Response({"error": "Quiz not found"}, status=status.HTTP_404_NOT_FOUND)
 
-        # Expected request body: { "answers": { "1": "a", "2": "c", ... } }  (question_id: selected_option)
-        answers = request.data.get('answers', {})
+        answers = request.data.get('answers')
+        if not answers or not isinstance(answers, dict):
+            return Response({"error": "Answers must be provided as an object mapping question IDs to selected options"}, status=status.HTTP_400_BAD_REQUEST)
+
         questions = quiz.questions.all()
+        if not questions.exists():
+            return Response({"error": "This quiz has no questions"}, status=status.HTTP_400_BAD_REQUEST)
 
         score = 0
         feedback = []
