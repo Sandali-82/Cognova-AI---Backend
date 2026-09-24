@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'apps.rag_chat',
     'apps.analytics',
     'corsheaders',
+    'anymail',
 ]
 
 SITE_ID = 1
@@ -148,11 +149,11 @@ STATIC_URL = 'static/'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+# MAILERS = {
+#     "default": {
+#         "BACKEND": "django.core.mail.backends.console.EmailBackend",
+#     },
+# }
 
 AUTHENTICATION_BACKENDS = [
     'django.contrib.auth.backends.ModelBackend',
@@ -190,3 +191,20 @@ CORS_ALLOW_CREDENTIALS = True
 
 SESSION_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SAMESITE = 'Lax'
+
+REST_AUTH = {
+    'USE_JWT': False,
+    'SESSION_LOGIN': False,
+}
+
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'  
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+
+EMAIL_BACKEND = 'anymail.backends.brevo.EmailBackend'
+
+ANYMAIL = {
+    'BREVO_API_KEY': os.getenv('BREVO_API_KEY'),
+}
+
+DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL')

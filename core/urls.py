@@ -18,10 +18,15 @@ from django.contrib import admin
 from django.urls import path, include
 from rest_framework.authtoken.views import obtain_auth_token
 from apps.documents.views import CurrentUserTokenView
+from dj_rest_auth.registration.views import RegisterView
+from dj_rest_auth.views import LoginView, LogoutView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
+    path('api/auth/register/', RegisterView.as_view(), name='rest_register'),
+    path('api/auth/login/', LoginView.as_view(), name='rest_login'),
+    path('api/auth/logout/', LogoutView.as_view(), name='rest_logout'),
     path('api/', include('apps.documents.urls')),
     path('api/', include('apps.quizzes.urls')),
     path('api/', include('apps.summarization.urls')),
