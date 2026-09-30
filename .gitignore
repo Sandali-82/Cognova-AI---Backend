@@ -7,3 +7,4 @@ media/
 *.log
 .vscode/
 documents/
+.pytest_cache/

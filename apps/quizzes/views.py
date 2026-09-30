@@ -46,7 +46,7 @@ class SubmitQuizView(views.APIView):
 
     def post(self, request, quiz_id):
         try:
-            quiz = Quiz.objects.get(id=quiz_id)
+            quiz = Quiz.objects.get(id=quiz_id, document__user=request.user)
         except Quiz.DoesNotExist:
             return Response({"error": "Quiz not found"}, status=status.HTTP_404_NOT_FOUND)
 
