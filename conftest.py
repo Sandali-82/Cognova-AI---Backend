@@ -50,3 +50,22 @@ def quiz(document):
             explanation=f"Explanation for {text}",
         )
     return quiz
+
+@pytest.fixture
+def other_document(other_user):
+    return Document.objects.create(
+        user=other_user,
+        title="Not yours",
+        file="documents/other.pdf",
+        extracted_text="Some text",
+    )
+
+
+@pytest.fixture
+def empty_document(user):
+    return Document.objects.create(
+        user=user,
+        title="No text",
+        file="documents/empty.pdf",
+        extracted_text="",
+    )

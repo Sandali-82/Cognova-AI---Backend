@@ -17,7 +17,10 @@ class GenerateSummaryView(views.APIView):
         if not document.extracted_text:
             return Response({"error": "No extracted text available for this document"}, status=status.HTTP_400_BAD_REQUEST)
 
-        summary_content = generate_summary(document.extracted_text)
+        try:
+            summary_content = generate_summary(document.extracted_text)
+        except Exception:
+            return Response({"error": "Summary generation failed. Please try again."}, status=status.HTTP_502_BAD_GATEWAY)
 
         summary, created = Summary.objects.update_or_create(
             document=document,

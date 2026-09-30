@@ -38,7 +38,10 @@ class ChatWithDocumentView(views.APIView):
         if len(question) > 500:
             return Response({"error": "Question must be under 500 characters"}, status=status.HTTP_400_BAD_REQUEST)
 
-        answer = answer_question(document, question)
+        try:
+            answer = answer_question(document, question)
+        except Exception:
+            return Response({"error": "Failed to generate an answer. Please try again."}, status=status.HTTP_502_BAD_GATEWAY)
 
         chat_message = ChatMessage.objects.create(
             user=request.user,
