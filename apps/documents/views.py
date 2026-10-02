@@ -20,6 +20,13 @@ class DocumentViewSet(viewsets.ModelViewSet):
         document.extracted_text = extracted
         document.save()
 
+    def perform_update(self, serializer):
+        document = serializer.save()
+        # Only re-extract when the PDF itself was replaced
+        if 'file' in serializer.validated_data:
+            document.extracted_text = extract_text_from_pdf(document.file.path)
+            document.save()
+
 
 class CsrfExemptSessionAuthentication(SessionAuthentication):
     def enforce_csrf(self, request):
