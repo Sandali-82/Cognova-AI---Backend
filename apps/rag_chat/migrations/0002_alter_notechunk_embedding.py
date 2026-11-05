@@ -2,6 +2,7 @@
 
 import pgvector.django.vector
 from django.db import migrations
+from pgvector.django import VectorExtension
 
 
 class Migration(migrations.Migration):
@@ -11,6 +12,8 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+        # Creates the pgvector extension on databases that do not have it yet (e.g. a new Render database)
+        VectorExtension(),
         migrations.AlterField(
             model_name='notechunk',
             name='embedding',
