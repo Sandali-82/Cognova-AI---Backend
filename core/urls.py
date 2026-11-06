@@ -21,11 +21,13 @@ from apps.documents.views import CurrentUserTokenView
 from dj_rest_auth.views import LogoutView
 from dj_rest_auth.registration.views import VerifyEmailView
 from core.views import NoCsrfRegisterView, NoCsrfLoginView
+from core.views import health
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include('allauth.urls')),
     path('api/auth/register/', NoCsrfRegisterView.as_view(), name='rest_register'),
+    path('api/health/', health, name='health'),
     path('api/auth/login/', NoCsrfLoginView.as_view(), name='rest_login'),
     path('api/auth/logout/', LogoutView.as_view(), name='rest_logout'),
     path('api/auth/registration/account-confirm-email/', VerifyEmailView.as_view(), name='account_confirm_email'),
